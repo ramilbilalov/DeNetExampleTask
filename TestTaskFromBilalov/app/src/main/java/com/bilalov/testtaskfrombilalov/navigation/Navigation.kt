@@ -9,7 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.bilalov.testtaskfrombilalov.view.ChildsPreview
+import com.bilalov.testtaskfrombilalov.view.ChildrenPreview
 import com.bilalov.testtaskfrombilalov.view.DefaultPreview
 import com.bilalov.testtaskfrombilalov.viewModel.MainViewModel
 
@@ -45,11 +45,13 @@ fun Navigation(
                     nullable = true
                 }
             )) { entry ->
-            ChildsPreview(
-                login = entry.arguments?.getString("login").toString(),
-                viewModel = viewModel,
-                navHostController = navController
-            )
+            entry.arguments?.let {
+                ChildrenPreview(
+                    countLevel = it.getInt("login"),
+                    viewModel = viewModel,
+                    navHostController = navController
+                )
+            }
         }
 
     }

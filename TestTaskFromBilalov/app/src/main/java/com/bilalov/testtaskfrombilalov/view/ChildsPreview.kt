@@ -1,6 +1,7 @@
 package com.bilalov.testtaskfrombilalov.view
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,8 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -22,12 +25,17 @@ import com.bilalov.testtaskfrombilalov.viewModel.MainViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ChildsPreview(
+fun ChildrenPreview(
     navHostController: NavHostController,
     viewModel: MainViewModel,
-    login: String
+    countLevel: Int
 ){
     val notes = viewModel.readAllNotes().observeAsState(listOf()).value
+
+    val counter = rememberSaveable {
+        mutableStateOf(countLevel)
+    }
+    Log.e("TTT", "Restart: $countLevel")
 
     Scaffold() {
         Column(
@@ -41,26 +49,32 @@ fun ChildsPreview(
                 modifier = Modifier.fillMaxSize()
             ) {
                 Button(onClick = {
+                    counter.value++
                     viewModel.initDatabase(TYPE_ROOM) {
-                        viewModel.addNote(note = Note(name = "Local", position = "Test")) {
+                        viewModel.addNote(note = Note(name = "Local", position = "left", countLevel = counter.value)) {
                             navHostController.navigate(
                                 Screen.SecondView
                                     .withArgs(
-                                        "login"
+                                        counter.value
                                     )
                             )
                         }
                     }
-                }) {
+                    Log.e("TTT", "CounterLevel: ${counter.value}")
+
+                }
+                ) {
 
                 }
                 Button(onClick = {
+                    counter.value++
                     viewModel.initDatabase(TYPE_ROOM) {
-                        viewModel.deleteNote(note = Note(id = 1, "Local", "Test")) {
-
+                        viewModel.deleteNote(note = Note(id = 1, "Local", "right", countLevel = counter.value)) {
                         }
                     }
-                }) {
+                    Log.e("TTT", "CounterLevel: ${counter.value}")
+                }
+                ) {
 
                 }
             }
@@ -78,5 +92,7 @@ fun NoteItem(
     note: Note,
     viewModel: MainViewModel
 ) {
-    Text(text = "${note.name} ${note.id}")
+    Column(verticalArrangement = Arrangement.SpaceAround) {
+        Text(text = "${note.name} ${note.id} ${note.countLevel} ${note.position}")
+    }
 }

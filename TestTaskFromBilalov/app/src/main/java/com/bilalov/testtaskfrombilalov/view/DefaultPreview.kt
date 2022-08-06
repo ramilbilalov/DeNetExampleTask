@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,7 +26,9 @@ fun DefaultPreview(
     context: Application,
     viewModel: MainViewModel
 ) {
-    var counter:Int = 0
+    val counter = rememberSaveable {
+        mutableStateOf(0)
+    }
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -42,7 +46,6 @@ fun DefaultPreview(
             Image(painterResource(id = R.drawable.ic_baseline_circle_24), contentDescription = "root",
                 //modifier = Modifier.fillMaxWidth()
             )
-
             Row(
                 horizontalArrangement = Arrangement.SpaceAround,
                 //verticalAlignment = Alignment.CenterVertically,
@@ -50,12 +53,12 @@ fun DefaultPreview(
             ) {
                 Button(onClick = {
                     viewModel.initDatabase(TYPE_ROOM) {
-                        counter++
-                        viewModel.addNote(note = Note(name = "Local", position = "{$counter}L")) {
+                        counter.value++
+                        viewModel.addNote(note = Note(name = "Local", position = "left", countLevel = counter.value)) {
                             navController.navigate(
                                 Screen.SecondView
                                     .withArgs(
-                                        "login"
+                                        counter.value
                                     )
                             )
                         }
@@ -65,9 +68,14 @@ fun DefaultPreview(
                 }
                 Button(onClick = {
                     viewModel.initDatabase(TYPE_ROOM) {
-                        counter++
-                        viewModel.deleteNote(note = Note(id = 1, "Local", "Test")) {
-
+                        counter.value++
+                        viewModel.addNote(note = Note(name = "Local", position = "right", countLevel = counter.value)) {
+                            navController.navigate(
+                                Screen.SecondView
+                                    .withArgs(
+                                        counter.value
+                                    )
+                            )
                         }
                     }
                 }) {

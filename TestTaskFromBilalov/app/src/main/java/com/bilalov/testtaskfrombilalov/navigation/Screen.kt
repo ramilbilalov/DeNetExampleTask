@@ -1,5 +1,7 @@
 package com.bilalov.testtaskfrombilalov.navigation
 
+import androidx.compose.runtime.MutableState
+
 sealed class Screen(val screenName: String) {
 
     object Main : Screen("main")
@@ -8,7 +10,7 @@ sealed class Screen(val screenName: String) {
 
 
 
-    fun withArgs(vararg args: String): String {
+    fun withArgs(vararg args: Int): String {
         return buildString {
             append(screenName)
             args.forEach { args ->

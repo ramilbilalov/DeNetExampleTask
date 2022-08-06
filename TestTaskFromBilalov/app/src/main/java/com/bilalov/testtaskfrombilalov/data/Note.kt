@@ -11,5 +11,7 @@ data class Note(
     @ColumnInfo
     val name: String,
     @ColumnInfo
-    val position: String
+    val position: String,
+    @ColumnInfo
+    val countLevel: Int
 )

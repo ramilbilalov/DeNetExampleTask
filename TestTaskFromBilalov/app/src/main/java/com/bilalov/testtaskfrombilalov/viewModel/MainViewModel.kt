@@ -36,11 +36,7 @@ class MainViewModel @Inject constructor(private val application: Application) : 
             when (dbType.value){
                 TYPE_ROOM -> {
                     listOf<Note>(
-                        Note(position = "Tjfrme", name = " rfeffeferf"),
-                        Note(position = "edw", name = " dwedw"),
-                        Note(position = "Tjfrdme", name = " ewd"),
-                        Note(position = "wedwd", name = " dfgt"),
-                        Note(position = "wedwed", name = " rfeffegtrgtrferf")
+                        Note(position = "Tjfrme", name = " rfeffeferf", countLevel = 1)
                     )
                 }
                 else -> {
