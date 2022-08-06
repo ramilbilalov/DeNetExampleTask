@@ -55,10 +55,3 @@ fun Greeting(
     )
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun DefaultPreview() {
-//    TestTaskFromBilalovTheme {
-//        Greeting("Android", context, viewModel)
-//    }
-//}
