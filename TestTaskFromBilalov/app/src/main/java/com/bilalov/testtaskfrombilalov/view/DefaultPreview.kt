@@ -52,32 +52,64 @@ fun DefaultPreview(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Button(onClick = {
-                    viewModel.initDatabase(TYPE_ROOM) {
-                        counter.value++
-                        viewModel.addNote(note = Note(name = "Local", position = "left", countLevel = counter.value)) {
-                            navController.navigate(
-                                Screen.SecondView
-                                    .withArgs(
-                                        counter.value
+//                    viewModel.initDatabase(TYPE_ROOM) {
+//                        counter.value++
+//                        viewModel.addNote(note = Note(name = "Local", position = "left", countLevel = counter.value)) {
+//                            navController.navigate(
+//                                Screen.SecondView
+//                                    .withArgs(
+//                                        counter.value
+//                                    )
+//                            )
+//                        }
+//                    }
+                }, modifier = Modifier.background(color = Color.DarkGray)
+                ) {
+                    Button(
+                        onClick = {
+                            viewModel.initDatabase(TYPE_ROOM) {
+                                counter.value++
+                                viewModel.addNote(note = Note(name = "Local", position = "left", countLevel = counter.value)) {
+                                    navController.navigate(
+                                        Screen.SecondView
+                                            .withArgs(
+                                                counter.value
+                                            )
                                     )
-                            )
-                        }
+                                }
+                            }
+                        },
+                    ) {
+                        Text(text = "Create")
                     }
-                }) {
-
+                    Button(onClick = {
+                        viewModel.initDatabase(TYPE_ROOM) {
+                            counter.value++
+                            viewModel.deleteNote(note = Note(name = "Local", position = "right", countLevel = counter.value)) {
+                                navController.navigate(
+                                    Screen.SecondView
+                                        .withArgs(
+                                            counter.value
+                                        )
+                                )
+                            }
+                        }
+                    }) {
+                        Text(text = "Delete")
+                    }
                 }
                 Button(onClick = {
-                    viewModel.initDatabase(TYPE_ROOM) {
-                        counter.value++
-                        viewModel.addNote(note = Note(name = "Local", position = "right", countLevel = counter.value)) {
-                            navController.navigate(
-                                Screen.SecondView
-                                    .withArgs(
-                                        counter.value
-                                    )
-                            )
-                        }
-                    }
+//                    viewModel.initDatabase(TYPE_ROOM) {
+//                        counter.value++
+//                        viewModel.addNote(note = Note(name = "Local", position = "right", countLevel = counter.value)) {
+//                            navController.navigate(
+//                                Screen.SecondView
+//                                    .withArgs(
+//                                        counter.value
+//                                    )
+//                            )
+//                        }
+//                    }
                 }) {
 
                 }
