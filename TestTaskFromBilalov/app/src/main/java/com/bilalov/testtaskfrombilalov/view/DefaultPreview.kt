@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.bilalov.testtaskfrombilalov.R
 import com.bilalov.testtaskfrombilalov.data.Note
@@ -26,9 +26,7 @@ fun DefaultPreview(
     context: Application,
     viewModel: MainViewModel
 ) {
-    val counter = rememberSaveable {
-        mutableStateOf(0)
-    }
+    val counter = viewModel.countLevel.observeAsState().value
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -41,41 +39,50 @@ fun DefaultPreview(
 
         Column(horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,modifier = Modifier.background(
-            Color.Red
+            Color.DarkGray
         )) {
             Image(painterResource(id = R.drawable.ic_baseline_circle_24), contentDescription = "root",
-                //modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.size(98.dp)
             )
             Row(
                 horizontalArrangement = Arrangement.SpaceAround,
                 //verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Button(onClick = {
-//                    viewModel.initDatabase(TYPE_ROOM) {
-//                        counter.value++
-//                        viewModel.addNote(note = Note(name = "Local", position = "left", countLevel = counter.value)) {
-//                            navController.navigate(
-//                                Screen.SecondView
-//                                    .withArgs(
-//                                        counter.value
-//                                    )
-//                            )
-//                        }
-//                    }
-                }, modifier = Modifier.background(color = Color.DarkGray)
-                ) {
+                Column() {
+                    Button(onClick = {
+                        viewModel.initDatabase(TYPE_ROOM) {
+                            if (counter != null)
+                                navController.navigate(
+                                    Screen.SecondView
+                                        .withArgs(
+                                            counter
+                                        )
+                                )
+                        }
+                    }, modifier = Modifier.background(color = Color.DarkGray)
+                    ) {
+                        Text(text = "Select")
+                    }
                     Button(
                         onClick = {
-                            viewModel.initDatabase(TYPE_ROOM) {
-                                counter.value++
-                                viewModel.addNote(note = Note(name = "Local", position = "left", countLevel = counter.value)) {
-                                    navController.navigate(
-                                        Screen.SecondView
-                                            .withArgs(
-                                                counter.value
-                                            )
-                                    )
+                            if (counter != null) {
+                                viewModel.initDatabase(TYPE_ROOM) {
+                                    viewModel.addLevel()
+                                    viewModel.addNote(
+                                        note = Note(
+                                            name = "Local",
+                                            position = "left",
+                                            countLevel = counter
+                                        )
+                                    ) {
+                                        navController.navigate(
+                                            Screen.SecondView
+                                                .withArgs(
+                                                    counter
+                                                )
+                                        )
+                                    }
                                 }
                             }
                         },
@@ -83,35 +90,83 @@ fun DefaultPreview(
                         Text(text = "Create")
                     }
                     Button(onClick = {
-                        viewModel.initDatabase(TYPE_ROOM) {
-                            counter.value++
-                            viewModel.deleteNote(note = Note(name = "Local", position = "right", countLevel = counter.value)) {
-                                navController.navigate(
-                                    Screen.SecondView
-                                        .withArgs(
-                                            counter.value
-                                        )
-                                )
+                        if (counter != null) {
+                            viewModel.initDatabase(TYPE_ROOM) {
+                                viewModel.deleteLevel()
+                                viewModel.deleteNote(
+                                    note = Note(
+                                        name = "Local",
+                                        position = "left",
+                                        countLevel = counter
+                                    )
+                                ) {
+
+                                }
                             }
                         }
                     }) {
                         Text(text = "Delete")
                     }
                 }
-                Button(onClick = {
-//                    viewModel.initDatabase(TYPE_ROOM) {
-//                        counter.value++
-//                        viewModel.addNote(note = Note(name = "Local", position = "right", countLevel = counter.value)) {
-//                            navController.navigate(
-//                                Screen.SecondView
-//                                    .withArgs(
-//                                        counter.value
-//                                    )
-//                            )
-//                        }
-//                    }
-                }) {
 
+                Column() {
+                    Button(onClick = {
+                        viewModel.initDatabase(TYPE_ROOM) {
+                            if (counter != null)
+                                navController.navigate(
+                                    Screen.SecondView
+                                        .withArgs(
+                                            counter
+                                        )
+                                )
+                        }
+                    }, modifier = Modifier.background(color = Color.DarkGray)
+                    ) {
+                        Text(text = "Select")
+                    }
+                    Button(
+                        onClick = {
+                            if (counter != null) {
+                                viewModel.initDatabase(TYPE_ROOM) {
+                                    viewModel.addLevel()
+                                    viewModel.addNote(
+                                        note = Note(
+                                            name = "Local",
+                                            position = "right",
+                                            countLevel = counter
+                                        )
+                                    ) {
+                                        navController.navigate(
+                                            Screen.SecondView
+                                                .withArgs(
+                                                    counter
+                                                )
+                                        )
+                                    }
+                                }
+                            }
+                        },
+                    ) {
+                        Text(text = "Create")
+                    }
+                    Button(onClick = {
+                        if (counter != null) {
+                            viewModel.initDatabase(TYPE_ROOM) {
+                                viewModel.deleteLevel()
+                                viewModel.deleteNote(
+                                    note = Note(
+                                        name = "Local",
+                                        position = "right",
+                                        countLevel = counter
+                                    )
+                                ) {
+
+                                }
+                            }
+                        }
+                    }) {
+                        Text(text = "Delete")
+                    }
                 }
            }
         }

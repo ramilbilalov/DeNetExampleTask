@@ -18,32 +18,15 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val application: Application) : ViewModel() {
 
-    val readTest: MutableLiveData<List<Note>> by lazy {
-        MutableLiveData<List<Note>>()
+    val countLevel: MutableLiveData<Int> by lazy {
+        MutableLiveData<Int>(1)
     }
 
-    val dbType:MutableLiveData<String> by lazy {
-        MutableLiveData<String>(TYPE_ROOM)
-    }
 
     init {
-       // initDatabase(TYPE_ROOM)
+
     }
 
-    fun initDatabases(type:String){
-        Log.e("SSS", "Check already")
-        readTest.value =
-            when (dbType.value){
-                TYPE_ROOM -> {
-                    listOf<Note>(
-                        Note(position = "Tjfrme", name = " rfeffeferf", countLevel = 1)
-                    )
-                }
-                else -> {
-                    listOf()
-                }
-            }
-    }
     val context = application
 
     fun initDatabase(type: String, onSuccess: ()-> Unit) {
@@ -67,6 +50,7 @@ class MainViewModel @Inject constructor(private val application: Application) : 
         }
     }
 
+
     fun readAllNotes() = REPOSITORY.readAll
 
     fun deleteNote(note: Note, onSuccess: () -> Unit) {
@@ -77,6 +61,14 @@ class MainViewModel @Inject constructor(private val application: Application) : 
                 }
             }
         }
+    }
+
+    fun addLevel(){
+        countLevel.value = countLevel.value?.plus(1)
+    }
+
+    fun deleteLevel(){
+        countLevel.value = countLevel.value?.minus(1)
     }
 
 }
